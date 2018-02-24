@@ -170,7 +170,7 @@ class Human {
 
 extension Human: Growable {
     var age: Int? {
-        return 10
+        return 20
     }
 }
 let humanObj = Human()
@@ -187,4 +187,75 @@ class Animal {
 
 extension Animal: Growable {} // this works just fine
 
+let animalObj = Animal()
 
+//COLECTIONS OF PROTOCOLS
+
+//Since animal and human objects confirms to the growable protocol, they can be stored in an array of type Growable
+let growableArray:[Growable] = [humanObj, animalObj]
+growableArray.first?.age
+
+//PROTOCOL INHERITENCE
+protocol InheritingProtocol: someProtocol, secondProtocol {
+    
+    var bacon: Int? {get}
+}
+
+class anotherObj: InheritingProtocol {
+    var bacon: Int?
+    var doesNotNeedToBeSettable: Int = 0
+    var mustBeSettable: Int = 2
+    func sum(first: Int, second: Int) {
+        
+    }
+}
+
+//PROTOCOL COMPOSITION
+
+func printAgeOfAnimal(animal: Animal & Growable) {
+    print(animal.age!)
+}
+
+printAgeOfAnimal(animal: animalObj) // prints 10
+
+//PROTOCOL EXTENSIONS
+protocol Rotating {
+    var rotates:Bool {get}
+}
+
+extension Rotating {
+    var rotates: Bool{
+        return true
+    }
+}
+
+class Fan: Rotating {}
+
+let fanObj = Fan()
+fanObj.rotates
+
+//PROVIDING DEFAULT IMPLEMENTATION USING PROTOCOL EXTENSION
+protocol Rotating2 {
+    var rotating:Bool {get}
+}
+
+extension Rotating2 {
+    var rotating: Bool {
+        return true
+    }
+}
+
+class Fan2: Rotating2 {
+    var rotating: Bool {
+        return false
+    }
+}
+let fan2Obj = Fan2()
+fan2Obj.rotating
+
+//ADDING CONSTRAINTS TO PROTOCOL EXTENSIONS
+extension Array where Element: Equatable {
+    static func ==(lhs: Array<Element>, rhs: Array<Element>) -> Bool {
+        return lhs == rhs
+    }
+}
